@@ -17,7 +17,8 @@ public class MainPage extends BasePageClass {
 
     private static final By BUY_PRODUCT_BUTTON = By.className("item-buy-btn");
 
-    private static final By SEARCH_PRODUCT_INPUT = By.className("form-control search-input");
+   // private static final By SEARCH_PRODUCT_INPUT = By.className("form-control search-input");
+    private static final By SEARCH_PRODUCT_INPUT = By.xpath("//input[@name='filter_name']");
 
     private static final By CLOSE_BUTTON_WINDOW_LOCATOR = By.xpath("//div[@id='notification-type']//button[contains(@class,'close')]");
 
@@ -37,7 +38,7 @@ public class MainPage extends BasePageClass {
 
     private static final By SUB_CATEGORY_OPTION_XPATH = By.xpath("//div[contains(@class, 'brands-list')]//div//a");
 
-    private static final By ADDO_TO_WISH_LIST_BUTTON_XPATH = By.xpath("//div[contains(@class, 'center-block')]//a[contains(@class,'item-favourite-small-btn')]");
+    private static final String ADDO_TO_WISH_LIST_BUTTON = "//div[contains(@class, 'center-block')]//a[contains(@class,'item-favourite-small-btn')]";
 
     private static final String ELEMENT_WITH_TEXT = "//*[text() = '%s']";
 
@@ -138,7 +139,15 @@ public class MainPage extends BasePageClass {
     }
 
     public MainPage addProductToWishListFromResultList() {
-        WebElement wishListButton = waitForExpectedElement(ADDO_TO_WISH_LIST_BUTTON_XPATH);
+        WebElement wishListButton = waitForExpectedElement(By.xpath(ADDO_TO_WISH_LIST_BUTTON));
+        wishListButton.click();
+        waitPageIsLoadedAndJQueryIsProcessed();
+        return this;
+    }
+
+    public MainPage addProductToWishListFromResultList(String item) {
+        WebElement wishListButton =
+                waitForExpectedElement(By.xpath(String.format("//*[a[contains(.,'%s')]]" + ADDO_TO_WISH_LIST_BUTTON, item)));
         wishListButton.click();
         waitPageIsLoadedAndJQueryIsProcessed();
         return this;
@@ -209,6 +218,14 @@ public class MainPage extends BasePageClass {
         discountSystemPage.click();
         waitPageIsLoadedAndJQueryIsProcessed();
         return new BookmarksPage();
+    }
+
+    public WebElement notificationPopUpCloseButton(String popUpTitle){
+       return waitForExpectedElement(By.xpath("//*[@id='notification-type']//button[contains(@class,'close')]"));
+    }
+
+    public WebElement headerTab(String tabLabel){
+        return waitForExpectedElement(By.xpath(String.format(ELEMENT_WITH_TEXT, tabLabel)));
     }
 }
 

@@ -21,7 +21,7 @@ public class User extends MainPage {
         Properties properties = new Properties();
         String emailFromPropertyFile = "";
         try {
-            fis = new FileInputStream("./src/test/java/resources/dev.properties");
+            fis = new FileInputStream("./src/test/resources/dev.properties");
             properties.load(fis);
             emailFromPropertyFile = properties.getProperty(propertyName);
         } catch (FileNotFoundException e) {
